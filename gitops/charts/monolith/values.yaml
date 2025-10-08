@@ -1,0 +1,8 @@
+replicaCount: 1
+image:
+  repository: dockerhub_username/monolith-backend
+  tag: "sha-PLACEHOLDER"
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 8080
