@@ -1,0 +1,14 @@
+replicaCount: 1
+image:
+  repository: d22002/keno-backend
+  tag: "sha-PLACEHOLDER"
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 8080
+
+resources: {}
+ingress:
+  enabled: false
+
+extraEnv: []

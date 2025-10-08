@@ -10,7 +10,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      IMAGE_REPO: dockerhub_username/your-app-backend
+      IMAGE_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/keno-backend
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -44,9 +44,9 @@ jobs:
         env:
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          git config --global user.email "ci-bot@yourorg.com"
-          git config --global user.name "CI Bot"
-          git clone https://x-access-token:${{ secrets.GITOPS_REPO_TOKEN }}@github.com/your-org/gitops.git
+          git config --global user.email "suvorov22002@gmail.com"
+          git config --global user.name "suvorov"
+          git clone https://x-access-token:${{ secrets.GITOPS_REPO_TOKEN }}@github.com/pyramid-betting-solutions/gitops.git
           cd gitops/charts/backend
           sed -i "s/^  tag: .*$/  tag: \"${IMAGE_TAG}\"/" values.yaml
           git add values.yaml

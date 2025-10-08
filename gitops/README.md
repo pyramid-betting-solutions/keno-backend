@@ -1,1 +1,1 @@
-# GitOps repo for monolith deployment
+# GitOps repo for keno-backend deployment
