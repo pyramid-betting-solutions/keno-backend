@@ -1,4 +1,3 @@
-node_modules/
-*.log
-.terraform/
-.terraform.lock.hcl
+target/
+.idea/
+.vscode/
