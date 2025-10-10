@@ -31,4 +31,4 @@ jobs:
           git config user.email "suvorov22002@gmail.com"
           git add gitops/charts/backend/values.yaml
           git commit -m "Deploy image version ${{ github.event.inputs.version }}"
-          git push origin main
+          git push origin master
