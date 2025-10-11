@@ -38,9 +38,15 @@ spec:
           - name: SPRING_DATASOURCE_URL
             value: "jdbc:postgresql://{{ .Values.database.host }}:{{ .Values.database.port }}/{{ .Values.database.name }}"
           - name: SPRING_DATASOURCE_USERNAME
-            value: "{{ .Values.database.username }}"
+            valueFrom:
+              secretKeyRef:
+                name: keno-database-postgresql-secret
+                key: POSTGRES_USER
           - name: SPRING_DATASOURCE_PASSWORD
-            value: "{{ .Values.database.password }}"
+            valueFrom:
+              secretKeyRef:
+                name: keno-database-postgresql-secret
+                key: POSTGRES_PASSWORD
           - name: SPRING_JPA_HIBERNATE_DDL_AUTO
             value: "validate"
           resources:
