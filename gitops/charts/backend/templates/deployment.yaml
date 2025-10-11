@@ -2,18 +2,58 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "backend.fullname" . }}
+  namespace: {{ .Values.global.namespace }}
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "backend.name" . }}
+      {{- include "backend.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app: {{ include "backend.name" . }}
+        {{- include "backend.selectorLabels" . | nindent 8 }}
     spec:
+      initContainers:
+      - name: wait-for-db
+        image: postgres:15
+        command:
+        - sh
+        - -c
+        - |
+          until pg_isready -h {{ .Values.database.host }} -p {{ .Values.database.port }} -U {{ .Values.database.username }} -d {{ .Values.database.name }}; do
+            echo "Waiting for database to be ready..."
+            sleep 5
+          done
+          echo "Database is ready!"
       containers:
-        - name: keno-backend
+        - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           ports:
-            - containerPort: 8080
+          - containerPort: 8080
+          env:
+          - name: SPRING_PROFILES_ACTIVE
+            value: "default"
+          - name: SPRING_DATASOURCE_URL
+            value: "jdbc:postgresql://{{ .Values.database.host }}:{{ .Values.database.port }}/{{ .Values.database.name }}"
+          - name: SPRING_DATASOURCE_USERNAME
+            value: "{{ .Values.database.username }}"
+          - name: SPRING_DATASOURCE_PASSWORD
+            value: "{{ .Values.database.password }}"
+          - name: SPRING_JPA_HIBERNATE_DDL_AUTO
+            value: "validate"
+          resources:
+            {{- toYaml .Values.resources | nindent 12 -}}
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: {{ .Values.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.liveness.periodSeconds }}
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: {{ .Values.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.readiness.periodSeconds }}
