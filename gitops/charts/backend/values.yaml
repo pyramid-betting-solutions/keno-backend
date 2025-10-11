@@ -13,7 +13,7 @@ resources:
     cpu: "128m"
   limits:
     memory: "1Gi"
-    cpu: "256Mi"
+    cpu: "256m"
 
 ingress:
   enabled: false
