@@ -29,7 +29,7 @@ spring:
     baseline-on-migrate: true
 
 server:
-  port: 8280
+  port: 8080
 management:
   endpoints:
     web:
