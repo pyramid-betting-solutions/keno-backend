@@ -17,9 +17,17 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_schema: pyramid_keno
         jdbc:
           lob:
             non_contextual_creation: true
+  flyway:
+    enabled: true
+    schemas: pyramid_keno
+    default-schema: pyramid_keno
+    create-schemas: true
+    baseline-on-migrate: true
+
 server:
   port: 8080
 management:

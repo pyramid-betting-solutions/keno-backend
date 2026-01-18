@@ -26,6 +26,7 @@ database:
   name: "pyramid_keno_db"
   username: "pyramid_keno_user"
   password: "pyramid_keno_password"
+  schema: "pyramid_keno"
 
 readiness:
   initialDelaySeconds: 30
